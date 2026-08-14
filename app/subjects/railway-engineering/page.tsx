@@ -93,7 +93,7 @@ export default function RailwayEngineeringPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#030305] text-white">
       {/* Background */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+      <div className="pointer-events-none fixed inset-0">
         <div className="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-purple-700/10 blur-[120px]" />
 
         <div className="absolute right-[-120px] top-1/3 h-96 w-96 rounded-full bg-violet-600/10 blur-[130px]" />
@@ -113,9 +113,9 @@ export default function RailwayEngineeringPage() {
 
         {/* Hero */}
         <section className="relative overflow-hidden rounded-[32px] border border-white/[0.08] bg-[#07080d]">
-          <div className="absolute inset-0">
+          <div className="pointer-events-none absolute inset-0">
             <img
-              src="/images/train-hero.jfif"
+              src="/images/train-hero.jpg"
               alt="Railway Engineering"
               className="h-full w-full object-cover opacity-35"
               onError={(e) => {
@@ -208,7 +208,7 @@ export default function RailwayEngineeringPage() {
               <button
                 onClick={() =>
                   router.push(
-                    "/subjects/railway-engineering/lessons/track-geometry"
+                    "/subjects/railway-engineering/lesson/track-geometry"
                   )
                 }
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-violet-600 py-3.5 text-[9px] font-black shadow-[0_10px_35px_rgba(124,58,237,0.25)] transition hover:-translate-y-0.5"
@@ -246,25 +246,22 @@ export default function RailwayEngineeringPage() {
                     onClick={() =>
                       setActiveChapter(chapter.id)
                     }
-                    className={`group w-full rounded-[22px] border p-5 text-left transition ${
-                      active
-                        ? "border-purple-500/30 bg-purple-500/[0.06] shadow-[0_15px_50px_rgba(124,58,237,0.08)]"
-                        : "border-white/[0.07] bg-[#07080d] hover:border-white/[0.12]"
-                    } ${
-                      !chapter.unlocked
+                    className={`group w-full rounded-[22px] border p-5 text-left transition ${active
+                      ? "border-purple-500/30 bg-purple-500/[0.06] shadow-[0_15px_50px_rgba(124,58,237,0.08)]"
+                      : "border-white/[0.07] bg-[#07080d] hover:border-white/[0.12]"
+                      } ${!chapter.unlocked
                         ? "cursor-not-allowed opacity-50"
                         : ""
-                    }`}
+                      }`}
                   >
                     <div className="flex gap-4">
                       <div
-                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${
-                          active
-                            ? "bg-purple-500/15 text-purple-400"
-                            : chapter.progress === 100
-                              ? "bg-green-500/10 text-green-400"
-                              : "bg-white/[0.03] text-zinc-600"
-                        }`}
+                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${active
+                          ? "bg-purple-500/15 text-purple-400"
+                          : chapter.progress === 100
+                            ? "bg-green-500/10 text-green-400"
+                            : "bg-white/[0.03] text-zinc-600"
+                          }`}
                       >
                         {chapter.progress === 100 ? (
                           <Check size={18} />
@@ -291,11 +288,10 @@ export default function RailwayEngineeringPage() {
 
                           <ChevronRight
                             size={16}
-                            className={`shrink-0 transition ${
-                              active
-                                ? "text-purple-400"
-                                : "text-zinc-700 group-hover:text-zinc-400"
-                            }`}
+                            className={`shrink-0 transition ${active
+                              ? "text-purple-400"
+                              : "text-zinc-700 group-hover:text-zinc-400"
+                              }`}
                           />
                         </div>
 
@@ -387,7 +383,7 @@ export default function RailwayEngineeringPage() {
                 disabled={!currentChapter.unlocked}
                 onClick={() =>
                   router.push(
-                    "/subjects/railway-engineering/lessons/track-geometry"
+                    "/subjects/railway-engineering/lesson/track-geometry"
                   )
                 }
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 py-3.5 text-[9px] font-black transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:bg-zinc-800"
