@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import PWARegister from "@/components/PWARegister";
 
 export const metadata: Metadata = {
   title: "RailLearn",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <PWARegister />
         {children}
       </body>
     </html>
