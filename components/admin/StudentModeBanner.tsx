@@ -1,15 +1,15 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useAdminMode } from "./AdminModeProvider";
 
 const STORAGE_KEY = "raillearn_admin_student_mode";
 
 export default function StudentModeBanner() {
-    const router = useRouter();
     const pathname = usePathname();
-
+    const { disableStudentMode, isNavigating } = useAdminMode();
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -17,49 +17,31 @@ export default function StudentModeBanner() {
             setVisible(false);
             return;
         }
-
-        const active =
-            window.localStorage.getItem(
-                STORAGE_KEY
-            ) === "true";
-
-        setVisible(active);
+        setVisible(window.localStorage.getItem(STORAGE_KEY) === "true");
     }, [pathname]);
 
-    function backToAdmin() {
-        window.localStorage.removeItem(
-            STORAGE_KEY
-        );
-
-        setVisible(false);
-
-        router.push("/admin");
-    }
-
-    if (!visible) {
-        return null;
-    }
+    if (!visible) return null;
 
     return (
-        <div className="fixed left-0 right-0 top-0 z-[9999] border-b border-purple-500/20 bg-[#08050d]/95 px-4 py-2.5 backdrop-blur-xl">
+        <div className="fixed inset-x-0 top-0 z-[9999] border-b border-purple-500/20 bg-[#08050d]/95 px-3 py-2.5 backdrop-blur-xl sm:px-4">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
-                <div>
+                <div className="min-w-0">
                     <p className="text-[8px] font-black uppercase tracking-[0.2em] text-purple-300">
                         Student Mode
                     </p>
-
-                    <p className="text-[7px] text-zinc-600">
+                    <p className="hidden text-[7px] text-zinc-600 sm:block">
                         You are viewing RailLearn as a student.
                     </p>
                 </div>
-
                 <button
                     type="button"
-                    onClick={backToAdmin}
-                    className="flex items-center gap-2 rounded-xl border border-purple-500/20 bg-purple-500/10 px-3 py-2 text-[7px] font-black text-purple-200"
+                    onClick={disableStudentMode}
+                    disabled={isNavigating}
+                    aria-label="Back to admin mode"
+                    className="flex min-h-10 shrink-0 touch-manipulation items-center gap-2 rounded-xl border border-purple-500/20 bg-purple-500/10 px-3 py-2 text-[7px] font-black text-purple-200 transition hover:bg-purple-500/20 disabled:cursor-wait disabled:opacity-60"
                 >
-                    <ArrowLeft size={11} />
-                    Back to Admin
+                    {isNavigating ? <LoaderCircle size={11} className="animate-spin" /> : <ArrowLeft size={11} />}
+                    {isNavigating ? "Opening Admin..." : "Back to Admin"}
                 </button>
             </div>
         </div>
