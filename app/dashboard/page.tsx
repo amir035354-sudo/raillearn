@@ -923,7 +923,7 @@ export default function DashboardPage() {
   ========================================================= */
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#020204] text-white selection:bg-purple-500/30">
+    <main className="min-h-[100dvh] overflow-x-hidden bg-[#020204] text-white selection:bg-purple-500/30">
       {/* =====================================================
          GLOBAL STYLE
       ===================================================== */}
@@ -1085,7 +1085,7 @@ export default function DashboardPage() {
                 stiffness: 280,
                 damping: 28,
               }}
-              className="relative h-full w-[300px] border-r border-white/10 bg-[#050507] p-5 shadow-2xl"
+              className="relative max-h-[100dvh] w-[300px] overflow-y-auto overscroll-contain border-r border-white/10 bg-[#050507] p-5 pb-36 shadow-2xl"
             >
               <div className="mb-8 flex items-center justify-between">
                 <Logo />
@@ -1095,7 +1095,7 @@ export default function DashboardPage() {
                   onClick={() =>
                     setMobileMenu(false)
                   }
-                  className="rounded-xl border border-white/10 p-2 text-zinc-400 transition hover:bg-white/5 hover:text-white"
+                  className="min-h-10 min-w-10 touch-manipulation rounded-xl border border-white/10 p-2 text-zinc-400 transition hover:bg-white/5 hover:text-white"
                 >
                   <X size={18} />
                 </button>
@@ -1185,7 +1185,7 @@ export default function DashboardPage() {
                   onClick={() =>
                     setMobileMenu(true)
                   }
-                  className="rounded-xl border border-white/10 bg-white/[.03] p-2.5 text-zinc-400 transition hover:text-white lg:hidden"
+                  className="min-h-11 min-w-11 touch-manipulation rounded-xl border border-white/10 bg-white/[.03] p-2.5 text-zinc-400 transition hover:text-white lg:hidden"
                 >
                   <Menu size={19} />
                 </button>
@@ -1267,7 +1267,7 @@ export default function DashboardPage() {
              PAGE CONTENT
           ================================================= */}
 
-          <div className="mx-auto max-w-[1580px] p-5 md:p-8 xl:p-10">
+          <div className="mx-auto min-h-[calc(100dvh-76px)] max-w-[1580px] px-4 pb-16 pt-5 sm:p-5 md:p-8 xl:p-10">
             {loading ? (
               <LoadingScreen />
             ) : (
