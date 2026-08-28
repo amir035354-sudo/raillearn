@@ -175,128 +175,70 @@ export default function SubjectsPage() {
       }
 
       /* ===============================================
-         SUBJECTS
+         SUBJECTS + LESSONS + PROGRESS
       =============================================== */
 
-      const {
-        data: subjectData,
-        error: subjectError,
-      } = await supabase
-        .from("subjects")
-        .select(
-          `
-            id,
-            name,
-            code,
-            semester,
-            description,
-            image_url
-          `
-        )
-        .order("semester", {
-          ascending: true,
-          nullsFirst: false,
-        })
-        .order("name", {
-          ascending: true,
-        });
-
-      if (subjectError) {
-        console.error(
-          "SUBJECTS ERROR:",
-          subjectError
-        );
-
-        throw new Error(
-          subjectError.message
-        );
-      }
-
-      /* ===============================================
-         LESSONS
-      =============================================== */
-
-      const {
-        data: lessonData,
-        error: lessonError,
-      } = await supabase
-        .from("lessons")
-        .select(
-          "id, subject_id"
-        )
-        .order(
-          "lesson_order",
-          {
+      const [
+        { data: subjectData, error: subjectError },
+        { data: lessonData, error: lessonError },
+        {
+          data: lessonProgressData,
+          error: lessonProgressError,
+        },
+        { data: progressData, error: progressError },
+      ] = await Promise.all([
+        supabase
+          .from("subjects")
+          .select(
+            `
+              id,
+              name,
+              code,
+              semester,
+              description,
+              image_url
+            `
+          )
+          .order("semester", {
             ascending: true,
             nullsFirst: false,
-          }
-        );
+          })
+          .order("name", { ascending: true }),
+        supabase
+          .from("lessons")
+          .select("id, subject_id")
+          .order("lesson_order", {
+            ascending: true,
+            nullsFirst: false,
+          }),
+        supabase
+          .from("lesson_progress")
+          .select("lesson_id, completed")
+          .eq("user_id", user.id)
+          .eq("completed", true),
+        supabase
+          .from("progress")
+          .select("lesson_id, completed")
+          .eq("user_id", user.id)
+          .eq("completed", true),
+      ]);
+
+      if (subjectError) {
+        console.error("SUBJECTS ERROR:", subjectError);
+        throw new Error(subjectError.message);
+      }
 
       if (lessonError) {
-        console.error(
-          "LESSONS ERROR:",
-          lessonError
-        );
-
-        throw new Error(
-          lessonError.message
-        );
+        console.error("LESSONS ERROR:", lessonError);
+        throw new Error(lessonError.message);
       }
-
-      /* ===============================================
-         NEW PROGRESS
-      =============================================== */
-
-      const {
-        data: lessonProgressData,
-        error: lessonProgressError,
-      } = await supabase
-        .from("lesson_progress")
-        .select(
-          "lesson_id, completed"
-        )
-        .eq(
-          "user_id",
-          user.id
-        )
-        .eq(
-          "completed",
-          true
-        );
 
       if (lessonProgressError) {
-        console.warn(
-          "LESSON PROGRESS ERROR:",
-          lessonProgressError
-        );
+        console.warn("LESSON PROGRESS ERROR:", lessonProgressError);
       }
 
-      /* ===============================================
-         LEGACY PROGRESS
-      =============================================== */
-
-      const {
-        data: progressData,
-        error: progressError,
-      } = await supabase
-        .from("progress")
-        .select(
-          "lesson_id, completed"
-        )
-        .eq(
-          "user_id",
-          user.id
-        )
-        .eq(
-          "completed",
-          true
-        );
-
       if (progressError) {
-        console.warn(
-          "PROGRESS ERROR:",
-          progressError
-        );
+        console.warn("PROGRESS ERROR:", progressError);
       }
 
       /* ===============================================
